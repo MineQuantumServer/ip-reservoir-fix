@@ -1,0 +1,7 @@
+modLoader="javafml"
+loaderVersion="[4,)"
+license="MIT"
+[[mods]]
+modId="ip_reservoir_fix_smoke"
+version="1.0.0"
+displayName="Reservoir Fix Development Tests"

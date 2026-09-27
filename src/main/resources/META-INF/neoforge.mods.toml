@@ -1,0 +1,33 @@
+modLoader="javafml"
+loaderVersion="[4,)"
+license="MIT"
+
+[[mods]]
+modId="ip_reservoir_fix"
+version="1.0.0"
+displayName="Immersive Petroleum Reservoir Fix"
+description='''Uses the world-generation biome reader during reservoir generation to avoid synchronous server chunk requests inside the reservoir lock.'''
+
+[[mixins]]
+config="ip_reservoir_fix.mixins.json"
+
+[[dependencies.ip_reservoir_fix]]
+modId="neoforge"
+type="required"
+versionRange="[21.1.251,21.2)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.ip_reservoir_fix]]
+modId="minecraft"
+type="required"
+versionRange="[1.21.1]"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.ip_reservoir_fix]]
+modId="immersivepetroleum"
+type="required"
+versionRange="[4.5.0-39]"
+ordering="AFTER"
+side="BOTH"

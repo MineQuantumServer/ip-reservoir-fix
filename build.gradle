@@ -1,0 +1,58 @@
+plugins {
+    id 'java-library'
+    id 'net.neoforged.moddev' version '2.0.143'
+}
+
+group = 'dev.reservoirfix'
+version = '1.0.0'
+base { archivesName = 'ip-reservoir-fix-1.21.1' }
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(21)
+    withSourcesJar()
+}
+repositories { mavenCentral() }
+
+sourceSets { smoke }
+configurations {
+    smokeImplementation.extendsFrom implementation
+    smokeRuntimeOnly.extendsFrom runtimeOnly
+}
+sourceSets.smoke.compileClasspath += sourceSets.main.output
+sourceSets.smoke.runtimeClasspath += sourceSets.main.output
+
+neoForge {
+    version = '21.1.251'
+    addModdingDependenciesTo(sourceSets.smoke)
+    runs {
+        gameTestServer {
+            type = 'gameTestServer'
+            sourceSet = sourceSets.smoke
+            gameDirectory = file('run-smoke')
+            systemProperty 'neoforge.enabledGameTestNamespaces', 'ip_reservoir_fix_smoke'
+            systemProperty 'mixin.debug.export', 'true'
+            systemProperty 'mixin.debug.countInjections', 'true'
+        }
+    }
+    mods {
+        ip_reservoir_fix { sourceSet sourceSets.main }
+        ip_reservoir_fix_smoke { sourceSet sourceSets.smoke }
+    }
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.10.2'
+    // Original mods are only needed for the optional in-game smoke test.
+    smokeImplementation fileTree(dir: 'smoke-mods', include: '*.jar')
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.release = 21
+}
+tasks.named('test') { useJUnitPlatform() }
+tasks.named('jar') { from('LICENSE') }
+tasks.withType(AbstractArchiveTask).configureEach {
+    preserveFileTimestamps = false
+    reproducibleFileOrder = true
+}

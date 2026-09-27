@@ -1,0 +1,6 @@
+.gradle/
+build/
+run-smoke/
+smoke-mods/*.jar
+.idea/
+*.iml
